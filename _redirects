@@ -1,10 +1,5 @@
-# Pretty paths. 200 keeps the requested path and serves the file.
-# https://developers.cloudflare.com/pages/configuration/redirects/
-
+# Directory rewrite only. Do not rewrite /page to /page.html: Pages pretty
+# URLs already serve the extensionless path, and a 200 rewrite to the .html
+# file makes both URLs 308 to each other (ERR_TOO_MANY_REDIRECTS).
 /.debug              /.debug/index.html   200
 /.debug/             /.debug/index.html   200
-/privacy             /privacy.html        200
-/impressum           /impressum.html      200
-/tos                 /tos.html            200
-/admin               /admin/index.html    200
-/affiliates          /affiliates.html     200
