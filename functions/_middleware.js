@@ -23,12 +23,25 @@ export async function onRequest(context) {
   const cf = context.request.cf || {};
   const country = sanitize(cf.country);
   const region = sanitize(cf.regionCode);
+  const url = new URL(context.request.url);
 
   const blocked =
     BLOCKED_COUNTRIES.has(country) ||
     (country === 'UA' && BLOCKED_UA_REGIONS.has(region));
 
-  if (!blocked) return context.next();
+  console.info("littlelink geo check", {
+    path: url.pathname,
+    country: country || "(none)",
+    region: region || "(none)",
+    blocked,
+  });
+
+  if (!blocked) {
+    console.info("littlelink geo check: allowed", url.pathname);
+    return context.next();
+  }
+
+  console.info("littlelink geo check: refused 451", country || "(none)", url.pathname);
 
   return new Response(refusalPage(country), {
     status: 451,
