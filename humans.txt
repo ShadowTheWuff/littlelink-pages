@@ -10,10 +10,10 @@ Built on: LittleLink (https://littlelink.io)
 Hosted on: Cloudflare Pages
 Standards: HTML5, CSS3
 Components: Google Analytics, Clerk (admin sign-in)
-
-/* CREDITS */
 Layout and button styles: Seth Cottle, LittleLink (https://github.com/sethcottle/littlelink), MIT
 Extended button styles: LittleLink Extended (https://github.com/sethcottle/littlelink-extended)
-Typeface: Open Sans by Steve Matteson, served as woff2 from the Google Fonts files in fonts/
+Typeface: Open Sans by Steve Matteson, SIL Open Font License, files in fonts/
 Avatar: Tanner Knapp
+Favicon: the avatar, images/avatar.png
 Button logos: trademarks of their respective owners (VRChat, Steam, Roblox, MusicBrainz, ListenBrainz, AniList, Tracker Network, Medal.tv, TikTok, ORCID). Icons are the LittleLink brand SVGs in images/icons and images/icons-extended, used to identify those services.
+Reset stylesheet: css/reset.css, shipped with LittleLink
