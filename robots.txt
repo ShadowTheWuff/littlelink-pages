@@ -4,4 +4,4 @@ Disallow: /.debug/
 Disallow: /admin/
 Disallow: /impressum
 
-Sitemap: https://me.shadowdewuff.gay/sitemap.xml
+Sitemap: https://prod.shadowdewuff.gay/sitemap.xml

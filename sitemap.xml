@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://me.shadowdewuff.gay/</loc>
+    <loc>https://prod.shadowdewuff.gay/</loc>
+    <lastmod>2026-10-08</lastmod>
   </url>
   <url>
-    <loc>https://me.shadowdewuff.gay/privacy</loc>
+    <loc>https://prod.shadowdewuff.gay/privacy</loc>
+    <lastmod>2026-10-08</lastmod>
   </url>
   <url>
-    <loc>https://me.shadowdewuff.gay/tos</loc>
+    <loc>https://prod.shadowdewuff.gay/tos</loc>
+    <lastmod>2026-10-08</lastmod>
+  </url>
+  <url>
+    <loc>https://prod.shadowdewuff.gay/affiliates</loc>
+    <lastmod>2026-10-08</lastmod>
   </url>
 </urlset>
