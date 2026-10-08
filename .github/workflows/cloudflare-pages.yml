@@ -14,6 +14,13 @@ permissions:
   contents: read
   deployments: write
 
+# Runner and step diagnostic logs. Repository variables of the same name are
+# also set to true. A secret with the same name would override the variable.
+# https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/enabling-debug-logging
+env:
+  ACTIONS_RUNNER_DEBUG: true
+  ACTIONS_STEP_DEBUG: true
+
 concurrency:
   group: cloudflare-pages-production
   cancel-in-progress: false
@@ -22,6 +29,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Debug logging marker
+        if: runner.debug
+        run: echo "Step debug logging is enabled (runner.debug is true)."
+
       - uses: actions/checkout@v4
 
       - name: Check Cloudflare secrets
