@@ -193,9 +193,8 @@
   // Test mode: ?as=tanner renders the page as if Tanner Knapp were signed in,
   // without touching Clerk - no session is created and nothing is
   // authenticated, it only lets the signed-in UI be checked. Honoured on
-  // localhost and Vercel preview deployments (*.vercel.app, which sit behind
-  // Vercel Authentication) only; on the production domain the parameter is
-  // ignored and the normal sign-in applies, so the live page stays gated.
+  // localhost and Cloudflare Pages preview hosts (*.pages.dev) only; on the
+  // production domain the parameter is ignored and the normal sign-in applies.
   var TEST_USER = {
     id: 'test-tanner-knapp',
     primaryEmailAddress: { emailAddress: 'shadow@shadowdewuff.gay' }
@@ -206,9 +205,9 @@
       if (new URLSearchParams(window.location.search).get('as') !== 'tanner') return false;
     } catch (e) { return false; }
     var host = window.location.hostname;
-    var allowed = host === 'localhost' || host === '127.0.0.1' || /\.vercel\.app$/.test(host);
+    var allowed = host === 'localhost' || host === '127.0.0.1' || /\.pages\.dev$/.test(host);
     if (!allowed && window.console) {
-      console.info('?as=tanner is ignored on ' + host + '; test mode only runs on localhost and *.vercel.app previews.');
+      console.info('?as=tanner is ignored on ' + host + '; test mode only runs on localhost and *.pages.dev.');
     }
     return allowed;
   }

@@ -1,0 +1,9 @@
+# Pretty paths. 200 keeps the requested path and serves the file.
+# https://developers.cloudflare.com/pages/configuration/redirects/
+
+/.debug              /.debug/index.html   200
+/.debug/             /.debug/index.html   200
+/privacy             /privacy.html        200
+/impressum           /impressum.html      200
+/tos                 /tos.html            200
+/admin               /admin/index.html    200

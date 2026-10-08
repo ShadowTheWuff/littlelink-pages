@@ -1,65 +1,47 @@
-// Sanctions geo-blocking, as disclosed under "Purpose and legal basis" in
-// privacy.html.
+// Sanctions geo-blocking for the Cloudflare Pages deployment.
+// Refuse a request that appears to come from a comprehensively embargoed
+// jurisdiction with 451. Country-level check on the edge network's own
+// geolocation; no list of named individuals is consulted.
 //
-// The Owner and Vercel are both subject to United States sanctions and
-// export-control law, so a request that appears to come from a comprehensively
-// embargoed jurisdiction is refused with 451. This is a country-level check on
-// the edge network's own geolocation headers: no list of named individuals is
-// consulted, and nothing is decided about the User as a person.
-//
-// This covers the Vercel deployment only. The Cloudflare Workers and Docker
-// deployments in this repo need their own equivalent if they are public.
-//
-// Check this list against the current OFAC programs before relying on it; the
-// comprehensive embargoes are the ones that change least, but they do change.
+// Check this list against the current OFAC programs before relying on it.
 // https://ofac.treasury.gov/sanctions-programs-and-country-information
 const BLOCKED_COUNTRIES = new Set([
   'CU', // Cuba
   'IR', // Iran
   'KP', // North Korea
   'SY', // Syria
-//  'US'  // United States ( TEST)
 ]);
 
 // Embargoed regions of Ukraine, as ISO 3166-2 subdivision codes without the
-// country prefix, which is the form Vercel reports: Crimea, Sevastopol,
-// Donetsk, Luhansk, Kherson and Zaporizhzhia.
+// country prefix: Crimea, Sevastopol, Donetsk, Luhansk, Kherson, Zaporizhzhia.
+// Cloudflare reports these on request.cf.regionCode.
 const BLOCKED_UA_REGIONS = new Set(['43', '40', '14', '09', '65', '23']);
 
 const CONTACT = 'webmaster@shadowdewuff.gay';
 
-export const config = {
-  // Everything except Vercel's own internal endpoints.
-  matcher: '/((?!_vercel/).*)',
-};
-
-export default function middleware(request) {
-  const country = header(request, 'x-vercel-ip-country');
-  const region = header(request, 'x-vercel-ip-country-region');
+export async function onRequest(context) {
+  const cf = context.request.cf || {};
+  const country = sanitize(cf.country);
+  const region = sanitize(cf.regionCode);
 
   const blocked =
     BLOCKED_COUNTRIES.has(country) ||
     (country === 'UA' && BLOCKED_UA_REGIONS.has(region));
 
-  // Returning nothing continues to the static file.
-  if (!blocked) return;
+  if (!blocked) return context.next();
 
   return new Response(refusalPage(country), {
     status: 451,
     headers: {
       'content-type': 'text/html; charset=utf-8',
-      // The answer depends on where the request came from, so it must never be
-      // served from a shared cache to anyone else.
       'cache-control': 'no-store',
       'x-robots-tag': 'noindex',
     },
   });
 }
 
-// Header values are attacker-controlled in principle, so only ever let
-// characters that belong in a geo code back out into the page.
-function header(request, name) {
-  return (request.headers.get(name) || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+function sanitize(value) {
+  return String(value || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
 }
 
 function refusalPage(country) {
